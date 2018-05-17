@@ -1,0 +1,4 @@
+module:
+  name: test_module
+  description: xyz
+  version: 0.0.1
