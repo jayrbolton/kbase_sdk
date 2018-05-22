@@ -12,7 +12,7 @@ import inspect
 def validate_main_methods(context):
     """
     Validate that the methods found in kbase.yaml are present in main.py
-    Does some introspection on functiosn in main.py to validate their names and parameters
+    Does some introspection on functions in main.py to validate their names and parameters
     Will log errors and exit if any validations fail
     :param context: the context data from the init_context module
     """

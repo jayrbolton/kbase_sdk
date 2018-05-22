@@ -5,16 +5,19 @@ This uses the Cerberus library for type validation: http://docs.python-cerberus.
 """
 
 import inspect
-import os
 from cerberus import Validator
 from functools import wraps
+from typing import Callable
 
 from kbase_sdk.init_context import init_context
 import kbase_sdk.param_validation.exceptions as exceptions
 from kbase_sdk.param_validation.generate_validators import generate_validators
 
 
-def validate_params(fn):
+fn_type = Callable[[dict], dict]
+
+
+def validate_params(fn: fn_type) -> fn_type:
     """
     A function decorator that adds parameter validation.
     The function name must be registered in the config and we must be in an SDK repo.

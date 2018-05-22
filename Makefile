@@ -2,6 +2,10 @@
 .PHONY: test publish
 
 test:
+	flake8 kbase_sdk
+	flake8 test
+	mypy --ignore-missing-imports kbase_sdk
+	mypy --ignore-missing-imports test
 	python -m unittest discover test/
 
 publish:

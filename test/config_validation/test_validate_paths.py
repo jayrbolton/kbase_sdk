@@ -1,7 +1,6 @@
 import os
 import unittest
 import shutil
-import tempfile
 
 import kbase_sdk
 from kbase_sdk.config_validation.validate_paths import validate_paths

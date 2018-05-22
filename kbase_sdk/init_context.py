@@ -18,7 +18,7 @@ dotenv.load_dotenv(dotenv_path='./.env')
 
 
 @functools.lru_cache(maxsize=1)
-def init_context(directory=None):
+def init_context(directory=None) -> dict:
     """
     Initialize an app's context data from anywhere within the app.
     This function is memoized, so we don't have to redo the same IO on every
@@ -52,7 +52,7 @@ def init_context(directory=None):
     return context
 
 
-def _load_config(config_path):
+def _load_config(config_path) -> dict:
     """ Load the YAML configuration file into a python dictionary """
     with open(config_path, 'r') as stream:
         config = yaml.load(stream)  # Throws yaml.YAMLError

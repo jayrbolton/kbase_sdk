@@ -6,9 +6,14 @@
 Before working, activate a virtualenv with python3 and install dependencies
 
 ```sh
+# Init the virtual environment
 $ python -m venv env
 $ source env/bin/activate
+
+# Install package dependencies
 $ pip install -e .
+# Install dev dependencies
+$ pip install -r dev-requirements.txt
 ```
 
 Key files:

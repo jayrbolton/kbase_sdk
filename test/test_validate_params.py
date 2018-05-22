@@ -1,14 +1,13 @@
 import os
 import unittest
 
-import kbase_sdk.validate_params as validate_params
 import kbase_sdk.param_validation.exceptions as exceptions
 from test.test_app.src.main import my_method
 
 base_dir = os.path.dirname(__file__)
 
 
-class TestMain(unittest.TestCase):
+class TestValidateParams(unittest.TestCase):
 
     def setUp(self):
         os.environ['KBASE_ROOT'] = os.path.join(base_dir, 'test_app')

@@ -4,10 +4,10 @@ Validate the kbase.yaml configuration data.
 Configuration is set in a YAML file but converted to a python dict before getting passed here.
 """
 
-import subprocess
 from cerberus import Validator
 
 from .exceptions import ConfigInvalid
+
 
 def validate_yaml(config):
     """ Validate the kbase.yaml config """
