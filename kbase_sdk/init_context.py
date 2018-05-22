@@ -11,8 +11,7 @@ import dotenv
 
 from .config_validation.validate_yaml import validate_yaml
 from .config_validation.validate_paths import validate_paths
-from .config_validation.exceptions import ConfigInvalidException
-from .param_validation.generate_validators import generate_validators
+from .config_validation.exceptions import ConfigInvalid
 import kbase_sdk.exceptions as exceptions
 
 dotenv.load_dotenv(dotenv_path='./.env')
@@ -30,7 +29,7 @@ def init_context(directory=None):
     for dep in ['docker']:
         if not shutil.which(dep):
             raise exceptions.DependencyException(dep)
-    root_path = directory or os.getcwd()
+    root_path = directory or os.getenv('KBASE_ROOT') or os.getcwd()
     config_path = os.path.join(root_path, 'kbase.yaml')
     paths = {
         'root': root_path,
@@ -43,14 +42,12 @@ def init_context(directory=None):
     validate_paths(paths)
     config = _load_config(config_path)
     validate_yaml(config)
-    param_validators = generate_validators(config)
     context = {
         'paths': paths,
         'config': config,
         'docker_image_name': 'kbase-apps/' + config['module']['name'],
         'username': os.getenv('KBASE_USERNAME'),
-        'token': os.getenv('KBASE_TOKEN'),
-        'param_validators': param_validators
+        'token': os.getenv('KBASE_TOKEN')
     }
     return context
 
@@ -61,5 +58,5 @@ def _load_config(config_path):
         config = yaml.load(stream)  # Throws yaml.YAMLError
         if not isinstance(config, dict):
             # Handles the case if the yaml is a single string, array, etc
-            raise ConfigInvalidException(config, 'should be a dict', [])
+            raise ConfigInvalid(config, 'should be a dict', [])
     return config

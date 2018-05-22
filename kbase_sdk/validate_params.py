@@ -5,11 +5,13 @@ This uses the Cerberus library for type validation: http://docs.python-cerberus.
 """
 
 import inspect
+import os
 from cerberus import Validator
 from functools import wraps
 
 from kbase_sdk.init_context import init_context
 import kbase_sdk.param_validation.exceptions as exceptions
+from kbase_sdk.param_validation.generate_validators import generate_validators
 
 
 def validate_params(fn):
@@ -24,18 +26,22 @@ def validate_params(fn):
         def my_method(params):
            ...
     """
-    context = init_context()
     args = inspect.getargspec(fn).args
     if len(args) is not 1:
         raise exceptions.InvalidParamLength()
+
     @wraps(fn)
     def wrapper(*args, **kwargs):
+        context = init_context()
+        param_validators = generate_validators(context['config'])
         params = args[0]
         fn_name = fn.__name__
-        schema = context['param_validators'][fn_name]
+        schema = param_validators.get(fn_name)
+        if not schema:
+            raise exceptions.MissingMethod(fn_name)
         validator = Validator(schema)
         validator.validate(params)
         if validator.errors:
-            raise exceptions.ParamValidationException(validator.errors, params)
+            raise exceptions.InvalidParams(validator.errors, params)
         return fn(*args, **kwargs)
     return wrapper

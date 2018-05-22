@@ -7,14 +7,14 @@ Configuration is set in a YAML file but converted to a python dict before gettin
 import subprocess
 from cerberus import Validator
 
-from .exceptions import ConfigInvalidException
+from .exceptions import ConfigInvalid
 
 def validate_yaml(config):
     """ Validate the kbase.yaml config """
     validator = Validator(main_schema)
     validator.validate(config)
     if validator.errors:
-        raise ConfigInvalidException(config, None, validator.errors)
+        raise ConfigInvalid(config, None, validator.errors)
 
 
 # Cerberus schemas for the configuration file (kbase.yaml)
@@ -26,6 +26,9 @@ method_input_schema = {
         'required': True,
         'type': 'string',
         'minlength': 1
+    },
+    'optional': {
+        'type': 'boolean'
     },
     'label': {
         'required': True,
@@ -76,12 +79,12 @@ module_schema = {
 # Top-level schema for kbase.yaml
 main_schema = {
     'module': {
+        'required': True,
         'type': 'dict',
         'schema': module_schema
     },
     'narrative_methods': {
         'type': 'dict',
-        'required': False,
         'nullable': True,
         'allow_unknown': True,
         'valueschema': {
@@ -91,7 +94,6 @@ main_schema = {
     },
     'direct_methods': {
         'type': 'dict',
-        'required': False,
         'nullable': True,
         'allow_unknown': True,
         'valueschema': {

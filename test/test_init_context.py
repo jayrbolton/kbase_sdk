@@ -3,17 +3,23 @@ import unittest
 import shutil
 
 import kbase_sdk
-from kbase_sdk.config_validation.exceptions import MissingPathException
+from test.test_utils.initializers import init_temp_app
+from kbase_sdk.config_validation.exceptions import MissingPath
 
 
 class TestInitContext(unittest.TestCase):
 
     def setUp(self):
+        self.maxDiff = None
         self.base_dir = os.path.dirname(__file__)
-        self.test_app_dir = os.path.join(self.base_dir, 'test_app')
+        self.test_app_dir = init_temp_app()
+
+    def tearDown(self):
+        shutil.rmtree(self.test_app_dir)
 
     def test_valid_app(self):
         """ Test the successful case and all keys in the context dict """
+        # Initialize the app using os.getcwd()
         os.chdir(self.test_app_dir)
         kbase_sdk.init_context.cache_clear()
         context = kbase_sdk.init_context()
@@ -31,12 +37,26 @@ class TestInitContext(unittest.TestCase):
                     'name': 'test_module',
                     'description': 'xyz',
                     'version': '0.0.1'
-                }
+                },
+                'narrative_methods': {
+                    'my_method': {
+                        'input': {
+                            'x': {
+                                'label': 'label',
+                                'type': 'integer'
+                            },
+                            'y': {
+                                'label': 'label',
+                                'type': 'string',
+                                'optional': True
+                            }
+                        }
+                    }
+                },
             },
             'docker_image_name': 'kbase-apps/test_module',
             'username': 'jayrbolton',
-            'token': 'xyz',
-            'param_validators': {}
+            'token': 'xyz'
         })
 
     def test_invalid_app(self):
@@ -45,7 +65,7 @@ class TestInitContext(unittest.TestCase):
         config_path = os.path.join(self.test_app_dir, 'kbase.yaml')
         # Move kbase.yaml to kbase.yaml.bak
         shutil.move(config_path, config_path + '.bak')
-        with self.assertRaises(MissingPathException) as err:
+        with self.assertRaises(MissingPath) as err:
             kbase_sdk.init_context(self.test_app_dir)
         self.assertEqual(err.exception.path, config_path)
         self.assertEqual(err.exception.name, 'config')
@@ -59,6 +79,6 @@ class TestInitContext(unittest.TestCase):
         context1 = kbase_sdk.init_context(self.test_app_dir)
         shutil.move(config_path, config_path + '.bak')
         context2 = kbase_sdk.init_context(self.test_app_dir)
-        # If it's not caching, then a MissingPathException would be raised
+        # If it's not caching, then MissingPath would be raised
         self.assertEqual(context1, context2)
         shutil.move(config_path + '.bak', config_path)

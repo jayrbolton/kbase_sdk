@@ -1,5 +1,5 @@
 
-class ConfigInvalidException(Exception):
+class ConfigInvalid(Exception):
     """ Some part of the kbase.yaml file is invalid acccording to the schemas found in ./validate_yaml.py """
 
     def __init__(self, given_config, general_error, key_errors):
@@ -8,7 +8,7 @@ class ConfigInvalidException(Exception):
         self.key_errors = key_errors
 
 
-class MissingPathException(Exception):
+class MissingPath(Exception):
     """ A path, such as src/main.py or test/test_main.py, is missing from the project """
 
     def __init__(self, path, name):

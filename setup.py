@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+import os
 from setuptools import setup, find_packages
 
-readme = open('README.md').read()
+base_dir = os.path.dirname(__file__)
+readme = open(os.path.join(base_dir, 'README.md')).read()
 
 setup(
     name='kbase_sdk',
