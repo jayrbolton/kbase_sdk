@@ -2,3 +2,14 @@ module:
   name: test_module
   description: xyz
   version: 0.0.1
+
+narrative_methods:
+  my_method:
+    input:
+      x:
+        type: integer
+        label: label
+      y:
+        type: string
+        optional: true
+        label: label
