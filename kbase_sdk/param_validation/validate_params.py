@@ -34,7 +34,7 @@ def validate_params(fn: fn_type) -> fn_type:
         raise exceptions.InvalidParamLength()
 
     @wraps(fn)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args):
         context = init_context()
         param_validators = generate_validators(context['config'])
         params = args[0]
@@ -46,5 +46,5 @@ def validate_params(fn: fn_type) -> fn_type:
         validator.validate(params)
         if validator.errors:
             raise exceptions.InvalidParams(validator.errors, params)
-        return fn(*args, **kwargs)
+        return fn(*args)
     return wrapper

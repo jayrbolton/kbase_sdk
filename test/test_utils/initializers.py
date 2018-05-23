@@ -1,10 +1,14 @@
+"""
+Some test utilities for initializing data and fixtures
+"""
+
 import os
 import shutil
 import tempfile
 
 
 def init_temp_app():
-    """ Initialize a temporary app and return its context data """
+    """ Initialize a temporary app and return its path """
     temp_dir = tempfile.mkdtemp()
     test_app_dir = os.path.join(os.path.dirname(__file__), '..', 'test_app')
     temp_app_dir = os.path.join(temp_dir, 'app')

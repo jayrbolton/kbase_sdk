@@ -36,7 +36,8 @@ class TestInitContext(unittest.TestCase):
                 'module': {
                     'name': 'test_module',
                     'description': 'xyz',
-                    'version': '0.0.1'
+                    'version': '0.0.1',
+                    'authors': ['xyz']
                 },
                 'narrative_methods': {
                     'my_method': {

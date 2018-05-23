@@ -40,7 +40,7 @@ def init_context(directory=None) -> dict:
         'test_main_module': os.path.join(root_path, 'test', 'test_main.py')
     }
     validate_paths(paths)
-    config = _load_config(config_path)
+    config = load_yaml(config_path)
     validate_yaml(config)
     context = {
         'paths': paths,
@@ -52,7 +52,7 @@ def init_context(directory=None) -> dict:
     return context
 
 
-def _load_config(config_path) -> dict:
+def load_yaml(config_path) -> dict:
     """ Load the YAML configuration file into a python dictionary """
     with open(config_path, 'r') as stream:
         config = yaml.load(stream)  # Throws yaml.YAMLError

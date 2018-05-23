@@ -68,12 +68,13 @@ module_schema = {
         'minlength': 1
         },
     'authors': {
+        'required': True,
         'type': 'list',
         'minlength': 1,
         'schema': {
             'type': 'string'
-            }
         }
+    }
 }
 
 # Top-level schema for kbase.yaml
