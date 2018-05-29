@@ -9,6 +9,6 @@ test:
 	python -m unittest discover test/
 
 publish:
-	rm -r dist/*
+	rm -rf dist/*
 	python setup.py bdist_wheel 
 	twine upload --repository-url https://test.pypi.org/legacy/ dist/*

@@ -3,7 +3,7 @@ import os
 from setuptools import setup, find_packages
 
 base_dir = os.path.dirname(__file__)
-readme = open(os.path.join(base_dir, 'README.md')).read()
+readme = open(os.path.join(base_dir, 'README.rst')).read()
 
 setup(
     name='kbase_sdk',
@@ -11,7 +11,7 @@ setup(
     long_description=readme,
     long_description_content_type="test/markdown",
     python_requires='>=3.5',
-    version='0.0.2a3',
+    version='0.0.2a4',
     packages=find_packages(),
     install_requires=[
         'pyyaml>=3.12',
