@@ -55,7 +55,10 @@ def init_context(directory=None) -> dict:
 def load_yaml(config_path) -> dict:
     """ Load the YAML configuration file into a python dictionary """
     with open(config_path, 'r') as stream:
-        config = yaml.load(stream)  # Throws yaml.YAMLError
+        try:
+            config = yaml.load(stream)  # Throws yaml.YAMLError
+        except yaml.YAMLError as err:
+            raise ConfigInvalid(config, 'Invalid YAML: unable to parse', [])
         if not isinstance(config, dict):
             # Handles the case if the yaml is a single string, array, etc
             raise ConfigInvalid(config, 'should be a dict', [])
